@@ -13,8 +13,8 @@ async function postForm(e) {
         method: "POST",
         headers: {
             "Authorization": API_KEY,
-        }, 
-        body: form, 
+        },
+        body: form,
     });
 
     console.log([...form]);
@@ -22,9 +22,24 @@ async function postForm(e) {
     const data = await response.json();
 
     if (response.ok) {
-        console.log("Success:", data);
+        displayErrors(data);
     } else {
         throw new Error(data.error);
+    }
+}
+
+function displayErrors(data) {
+    let heading = `JSHint Results for ${data.file}`;
+
+    if (data.total_errors === 0) {
+        results = `<div class="no_errors">No errors reported!</div>`;
+    } else {
+        results = `<div>Total Errors: <span class="error_count">${data.total_errors}</span></div>`;
+        for (let error of data.error_list) {
+            results += `<div>At line <span class="line">${error.line}</span>, `;
+            results += `column <span class="column">${error.col}</span></div>`;
+            results += `<div class="error">${error.error}</div>`;
+        }
     }
 }
 
@@ -44,7 +59,7 @@ async function getStatus(e) {
 }
 
 function displayStatus(data) {
-    
+
     let heading = "API Key Status";
     let results = `<div>Your key is valid until</div>`;
     results += `<div class="key-status">${data.expiry}</div>`;
@@ -54,4 +69,3 @@ function displayStatus(data) {
 
     resultsModal.show();
 }
-
