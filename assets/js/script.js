@@ -6,13 +6,18 @@ document.getElementById("status").addEventListener("click", e => getStatus(e));
 document.getElementById("submit").addEventListener("click", e => postForm(e));
 
 function processOptions(form) {
-let optArray = [];
+    let optArray = [];
 
-for (let entry of form.entries()) {
-    if (entry[0] === "options") {
-        optArray.push(entry[1]);
+    for (let entry of form.entries()) {
+        if (entry[0] === "options") {
+            optArray.push(entry[1]);
+        }
     }
-}
+    form.delete("options");
+
+    form.append("options", optArray.join());
+
+    return form;
 }
 
 async function postForm(e) {
