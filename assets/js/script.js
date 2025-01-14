@@ -6,7 +6,6 @@ document.getElementById("status").addEventListener("click", e => getStatus(e));
 document.getElementById("submit").addEventListener("click", e => postForm(e));
 
 async function postForm(e) {
-    console.log("postForm function triggered!");
     const form = new FormData(document.getElementById("checksform"));
 
     const response = await fetch(API_URL, {
@@ -16,8 +15,6 @@ async function postForm(e) {
         },
         body: form,
     });
-
-    console.log([...form]);
 
     const data = await response.json();
 
