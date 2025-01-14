@@ -23,10 +23,6 @@ function processOptions(form) {
 async function postForm(e) {
     const form = processOptions(new FormData(document.getElementById("checksform")));
 
-    for (let entry of form.entries()) {
-        console.log(entry);
-    }
-
     const response = await fetch(API_URL, {
         method: "POST",
         headers: {
