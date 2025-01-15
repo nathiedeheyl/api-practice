@@ -23,7 +23,6 @@ function processOptions(form) {
 }
 
 async function postForm(e) {
-    console.log("The POST function has been triggered!");
     const form = processOptions(new FormData(document.getElementById("checksform")));
 
     const response = await fetch(API_URL, {
@@ -39,7 +38,7 @@ async function postForm(e) {
     if (response.ok) {
         displayErrors(data);
     } else {
-        console.log("Error: ", data);
+        displayException(data);
         throw new Error(data.error);
     }
 }
@@ -65,7 +64,6 @@ function displayErrors(data) {
 
 async function getStatus(e) {
 
-    console.log("The GET status function has been triggered!");
     const queryString = `${API_URL}?api_key=${API_KEY}`;
 
     const response = await fetch(queryString);
@@ -75,7 +73,7 @@ async function getStatus(e) {
     if (response.ok) {
         displayStatus(data);
     } else {
-        console.log("Error: ", data);
+        displayException(data);
         throw new Error(data.error);
     }
 }
@@ -85,6 +83,19 @@ function displayStatus(data) {
     let heading = "API Key Status";
     let results = `<div>Your key is valid until</div>`;
     results += `<div class="key-status">${data.expiry}</div>`;
+
+    document.getElementById("resultsModalTitle").innerText = heading;
+    document.getElementById("results-content").innerHTML = results;
+
+    resultsModal.show();
+}
+
+function displayException(data) {
+    let heading = `An Exception Occured`;
+
+    results = `<div>The API returened status code ${data.status_code}</div>`;
+    results += `<div>Error number: <strong>${data.error_no}</strong></div>`;
+    results += `<div>Error text: <strong>${data.error}</strong></div>`;
 
     document.getElementById("resultsModalTitle").innerText = heading;
     document.getElementById("results-content").innerHTML = results;
