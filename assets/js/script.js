@@ -2,8 +2,10 @@ const API_KEY = "MzsvWWtCTRFpmBRj_fK3Ly_5M2g";
 const API_URL = "https://ci-jshint.herokuapp.com/api";
 const resultsModal = new bootstrap.Modal(document.getElementById("resultsModal"));
 
+document.addEventListener("DOMContentLoaded", () => {
 document.getElementById("status").addEventListener("click", e => getStatus(e));
 document.getElementById("submit").addEventListener("click", e => postForm(e));
+});
 
 function processOptions(form) {
     let optArray = [];
@@ -21,6 +23,7 @@ function processOptions(form) {
 }
 
 async function postForm(e) {
+    console.log("The POST function has been triggered!");
     const form = processOptions(new FormData(document.getElementById("checksform")));
 
     const response = await fetch(API_URL, {
@@ -36,6 +39,7 @@ async function postForm(e) {
     if (response.ok) {
         displayErrors(data);
     } else {
+        console.log("Error: ", data);
         throw new Error(data.error);
     }
 }
@@ -61,6 +65,7 @@ function displayErrors(data) {
 
 async function getStatus(e) {
 
+    console.log("The GET status function has been triggered!");
     const queryString = `${API_URL}?api_key=${API_KEY}`;
 
     const response = await fetch(queryString);
@@ -70,6 +75,7 @@ async function getStatus(e) {
     if (response.ok) {
         displayStatus(data);
     } else {
+        console.log("Error: ", data);
         throw new Error(data.error);
     }
 }
